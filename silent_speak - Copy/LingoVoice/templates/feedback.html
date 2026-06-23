@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Feedback - SilentSpeak</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body {
+            background-color: #07060a;
+        }
+        /* Matching your bento-box luxury styling */
+        .feedback-card {
+            background: linear-gradient(135deg, rgba(30, 25, 41, 0.7) 0%, rgba(15, 12, 22, 0.85) 100%);
+            border-top: 1px solid rgba(224, 168, 153, 0.25);
+            border-left: 1px solid rgba(224, 168, 153, 0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center text-white px-4 selection:bg-purple-500/30">
+
+    <header class="w-full max-w-7xl mx-auto py-6 flex justify-between items-center z-10">
+        <div class="flex items-center gap-3">
+            <span class="text-xs font-black tracking-[0.2em] bg-gradient-to-r from-[#e0a899] to-purple-400 bg-clip-text text-transparent uppercase">
+                SilentSpeak
+            </span>
+        </div>
+        <a href="/" class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white transition">
+            &larr; Back to Home
+        </a>
+    </header>
+
+    <main class="w-full max-w-md my-auto relative z-10">
+        <div class="feedback-card rounded-2xl p-8 backdrop-blur-xl border border-white/5">
+            <h1 class="text-xl font-black text-white mb-2 tracking-tight">User Feedback</h1>
+            <p class="text-[10px] text-slate-400 mb-6 uppercase tracking-widest">We value your thoughts and suggestions.</p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-4 p-3 rounded-xl text-xs font-bold text-center {% if message.tags == 'success' %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/20{% else %}bg-rose-500/10 text-rose-400 border border-rose-500/20{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" class="space-y-4">
+                {% csrf_token %}
+                <div>
+                    <label for="message" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">
+                        Your Message
+                    </label>
+                    <textarea 
+                        id="message" 
+                        name="message" 
+                        rows="5" 
+                        required
+                        class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white text-xs focus:border-purple-500 outline-none transition resize-none placeholder-slate-600" 
+                        placeholder="Type your feedback, questions, or bug reports here..."></textarea>
+                </div>
+
+                <button 
+                    type="submit" 
+                    class="w-full py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-[10px] uppercase tracking-widest rounded-xl transition shadow-lg shadow-purple-900/20 active:scale-[0.98]">
+                    Submit Feedback
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="w-full max-w-7xl mx-auto py-8 text-center text-[10px] font-bold text-slate-500 tracking-wider">
+        &copy; 2026 SilentSpeak Workspace. All data safely synchronized.
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SilentSpeak - LingoVoice</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .glass-modal { background: rgba(13, 10, 18, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    </style>
+</head>
+<body style="background-color: #1e0a10; font-family: 'Inter', sans-serif;" class="text-white min-h-screen flex flex-col">
+
+    {% block body_layout %}
+    {% endblock %}
+
+    <div id="feedback-modal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 bg-black/60 backdrop-blur-sm">
+        <div class="w-full max-w-sm glass-modal p-6 rounded-[28px] border border-purple-500/20 transform scale-90 transition-all duration-300">
+            <h3 class="text-white font-black text-sm mb-4">Send Us Feedback</h3>
+            <textarea id="feedback-text" rows="3" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white text-xs mb-4" placeholder="How can we improve the system?"></textarea>
+            <div class="flex gap-2">
+                <button onclick="submitFeedback()" class="w-full py-2 bg-purple-600 rounded-xl text-white font-bold text-[10px] uppercase">Submit</button>
+                <button onclick="closeFeedbackModal()" class="w-full py-2 bg-white/5 rounded-xl text-white font-bold text-[10px] uppercase">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openFeedbackModal() { document.getElementById('feedback-modal').classList.remove('opacity-0', 'pointer-events-none'); }
+        function closeFeedbackModal() { document.getElementById('feedback-modal').classList.add('opacity-0', 'pointer-events-none'); }
+        function submitFeedback() { 
+            const feedback = document.getElementById('feedback-text').value;
+            if (!feedback) return alert("Please type something!");
+            alert("Feedback sent! Thank you.");
+            document.getElementById('feedback-text').value = '';
+            closeFeedbackModal();
+        }
+    </script>
+</body> 
+</html>
