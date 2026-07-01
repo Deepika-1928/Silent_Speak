@@ -4,5 +4,6 @@ services:
     runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn --pythonpath 'silent_speak - Copy' silent_speak.wsgi
-    packages:
-      - portaudio19-dev
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.12
