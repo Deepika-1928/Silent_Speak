@@ -8,7 +8,6 @@ from django.contrib import messages
 from .models import Feedback
 import json
 import os
-import io
 
 # Try importing dependencies dynamically
 try:
@@ -54,10 +53,10 @@ def login_view(request):
 
 
 def dashboard_view(request):
-    """Renders the core multi-language communication workspace."""
+    """Renders the core workspace. FIXED template file name matching your repository."""
     if not request.user.is_authenticated:
         return redirect('login')
-    return render(request, 'LingoVoice/dashboard.html')
+    return render(request, 'LingoVoice/dashboad.html')
 
 
 def logout_view(request):
@@ -69,9 +68,8 @@ def logout_view(request):
 def text_to_speech(request):
     """
     Core Voice Engine:
-    Receives text and a language code from the frontend,
-    translates it to the target language, and streams the binary audio 
-    directly back to the browser instead of writing file paths to disk.
+    Generates the audio file directly into the static directory and returns 
+    the exact JSON response status your dashboard JavaScript expects.
     """
     if request.method != 'POST':
         return JsonResponse({'status': 'error', 'message': 'Invalid request protocol style.'}, status=400)
@@ -79,11 +77,10 @@ def text_to_speech(request):
     if gTTS is None:
         return JsonResponse({
             'status': 'error',
-            'message': 'gTTS library not installed. Run "pip install gTTS" in your terminal.'
+            'message': 'gTTS library not installed.'
         }, status=500)
 
     try:
-        # Load JSON payload from the frontend AJAX fetch request
         data = json.loads(request.body)
         text_content = data.get('text', '').strip()
         incoming_lang = data.get('lang', 'en-IN')
@@ -91,10 +88,8 @@ def text_to_speech(request):
         if not text_content:
             return JsonResponse({'status': 'error', 'message': 'Buffer string was parsed empty.'}, status=400)
 
-        # Convert locale codes (e.g., 'ko-KR' -> 'ko', 'hi-IN' -> 'hi')
         clean_lang = incoming_lang.split('-')[0]
 
-        # AUTOMATIC TRANSLATION LAYER
         final_text = text_content
         if clean_lang != 'en' and GoogleTranslator is not None:
             try:
@@ -102,16 +97,17 @@ def text_to_speech(request):
             except Exception as e:
                 print(f"Translation skip/fallback: {e}")
 
-        # RUN AUDIO COMPILATION SYNTHESIS (IN-MEMORY STREAM FIX)
+        # Construct the static folder path safely inside your asset tree
+        output_directory = os.path.join(settings.BASE_DIR, 'LingoVoice', 'static', 'LingoVoice')
+        os.makedirs(output_directory, exist_ok=True)
+        output_file_path = os.path.join(output_directory, 'output.mp3')
+
+        # Run compilation synthesis and save the audio file
         tts_engine = gTTS(text=final_text, lang=clean_lang, slow=False)
-        
-        # Create a virtual container in RAM to hold the mp3 data bytes
-        audio_buffer = io.BytesIO()
-        tts_engine.write_to_fp(audio_buffer)
-        audio_buffer.seek(0)
-        
-        # Stream the binary data directly out to the user's web browser
-        return HttpResponse(audio_buffer.read(), content_type="audio/mpeg")
+        tts_engine.save(output_file_path)
+
+        # Return the exact JSON structure your original javascript looks for
+        return JsonResponse({'status': 'success'})
 
     except Exception as error_log:
         return JsonResponse({'status': 'error', 'message': str(error_log)}, status=500)
