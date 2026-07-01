@@ -2,6 +2,7 @@ services:
   - type: web
     name: silent-speak
     runtime: python
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn --pythonpath 'silent_speak - Copy' silent_speak.wsgi
     envVars:
