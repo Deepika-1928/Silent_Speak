@@ -1,1 +1,1 @@
-web: gunicorn silent_speak.wsgi
+web: gunicorn --pythonpath 'silent_speak - Copy' silent_speak.wsgi
