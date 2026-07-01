@@ -1,0 +1,1 @@
+web: gunicorn silent_speak.wsgi
