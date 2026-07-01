@@ -1,13 +1,14 @@
 {% extends 'LingoVoice/base.html' %}
+
 {% block body_layout %}
 <input type="hidden" id="django-csrf-token" value="{{ csrf_token }}">
- 
+
 <style>
     /* Custom Luxury Smooth Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #07060a; }
     ::-webkit-scrollbar-thumb { background: #2d263b; border-radius: 10px; }
- 
+
     /* True 3D Physical Layer Stacked Depth */
     .bento-3d-panel {
         background: linear-gradient(135deg, rgba(30, 25, 41, 0.7) 0%, rgba(15, 12, 22, 0.85) 100%);
@@ -15,7 +16,7 @@
         border-left: 1px solid rgba(224, 168, 153, 0.15);
         border-right: 1px solid rgba(0, 0, 0, 0.4);
         border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-        box-shadow:
+        box-shadow: 
             0 25px 50px -12px rgba(0, 0, 0, 0.7),
             inset 0 1px 2px rgba(255, 255, 255, 0.08),
             inset 0 -3px 10px rgba(0, 0, 0, 0.4);
@@ -26,12 +27,12 @@
     .bento-3d-panel:hover {
         transform: perspective(1000px) rotateX(0deg) translateY(-2px);
         border-top-color: rgba(224, 168, 153, 0.4);
-        box-shadow:
+        box-shadow: 
             0 30px 60px -10px rgba(147, 51, 234, 0.15),
             0 0 20px rgba(147, 51, 234, 0.05),
             inset 0 1px 2px rgba(255, 255, 255, 0.1);
     }
- 
+
     /* Tactile Sound Engine Micro-Bevel Buttons */
     .tactile-luxury-btn {
         background: linear-gradient(145deg, #231c30 0%, #110c1a 100%);
@@ -53,14 +54,14 @@
         border-bottom-color: rgba(255,255,255,0.05);
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5), inset 0 2px 5px rgba(0,0,0,0.4);
     }
- 
+
     /* Custom Glass Overlay Blur Framework */
     .glass-modal {
         background: rgba(13, 10, 18, 0.95);
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.08);
     }
- 
+
     /* Input Styling inside Modal */
     .modal-input {
         background: rgba(0, 0, 0, 0.5);
@@ -79,58 +80,54 @@
         box-shadow: 0 0 10px rgba(147, 51, 234, 0.3);
     }
 </style>
- 
+
 <div class="min-h-screen w-full flex flex-col md:flex-row bg-[#060508] p-5 gap-6 text-slate-200 font-sans antialiased relative overflow-hidden">
- 
+    
     <aside class="w-full md:w-76 flex flex-col justify-between p-6 rounded-[32px] shrink-0 bg-[#0d0a12] border border-purple-950/40 shadow-[10px_0_40px_rgba(0,0,0,0.6)] relative z-20">
         <div class="space-y-8">
- 
+            
             <div onclick="openProfileInspector()" class="p-4 rounded-2xl bg-gradient-to-b from-[#181321] to-[#0f0c14] border border-white/5 shadow-[inset_0_2px_4px_rgba(255,255,255,0.03)] flex flex-col items-center text-center relative overflow-hidden group cursor-pointer transition-all duration-300 hover:border-purple-500/30 hover:shadow-[0_0_25px_rgba(147,51,234,0.15)]">
                 <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-24 h-24 bg-purple-500/10 rounded-full blur-xl transition-all group-hover:bg-rose-500/20"></div>
- 
+                
                 <div class="w-16 h-16 rounded-full p-0.5 bg-gradient-to-tr from-[#e0a899] to-[#9333ea] shadow-[0_4px_15px_rgba(147,51,234,0.4)] mb-3 relative z-10 transform group-hover:scale-105 transition-transform">
                     <div class="w-full h-full bg-[#0d0a12] rounded-full flex items-center justify-center text-xl shadow-inner relative">
                         👤
                         <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-[#0d0a12] rounded-full animate-pulse"></div>
                     </div>
                 </div>
- 
                 <h3 class="text-xs font-black tracking-wide text-white flex items-center gap-1.5 group-hover:text-[#e0a899] transition-colors">
-                    {{ user.username|default:"deepika" }}
+                    {{ user.username|default:"deepika" }} 
                     <span class="text-[9px] opacity-60">🔍</span>
                 </h3>
                 <p class="text-[9px] text-[#e0a899] font-black tracking-widest uppercase mt-0.5 bg-purple-950/40 px-2.5 py-0.5 rounded-full border border-purple-900/30">PREMIUM MEMBER</p>
                 <span class="text-[8px] text-slate-500 font-bold uppercase tracking-wider mt-2 group-hover:text-slate-400 transition-colors">Click to inspect account</span>
             </div>
- 
+
             <nav class="space-y-3">
                 <button onclick="switchView('dashboard-view')" id="nav-dashboard-view" class="w-full flex items-center gap-4 px-5 py-3.5 text-white rounded-2xl transition-all duration-300 shadow-xl target-nav" style="background: linear-gradient(135deg, #e0a899 0%, #9333ea 100%);">
                     <span class="text-base">🏠</span> <span class="font-bold text-[11px] tracking-wider uppercase">Dashboard</span>
                 </button>
- 
                 <button onclick="switchView('stt-view')" id="nav-stt-view" class="w-full flex items-center gap-4 px-5 py-3.5 text-slate-400 hover:text-white rounded-2xl transition-all duration-300 hover:bg-white/5 border border-transparent hover:border-white/5 target-nav">
-                    <span class="text-base">🎙</span> <span class="font-bold text-[11px] tracking-wider uppercase">Speech to Text</span>
+                    <span class="text-base">🎙️</span> <span class="font-bold text-[11px] tracking-wider uppercase">Speech to Text</span>
                 </button>
- 
                 <button onclick="switchView('tts-view')" id="nav-tts-view" class="w-full flex items-center gap-4 px-5 py-3.5 text-slate-400 hover:text-white rounded-2xl transition-all duration-300 hover:bg-white/5 border border-transparent hover:border-white/5 target-nav">
                     <span class="text-base">🔊</span> <span class="font-bold text-[11px] tracking-wider uppercase">Text to Speech</span>
                 </button>
- 
                 <button onclick="openFeedbackModal()" class="w-full flex items-center gap-4 px-5 py-3.5 text-slate-400 hover:text-white rounded-2xl transition-all duration-300 hover:bg-white/5 border border-transparent hover:border-white/5 target-nav">
                     <span class="text-base">📝</span> <span class="font-bold text-[11px] tracking-wider uppercase">Feedback</span>
                 </button>
             </nav>
         </div>
- 
+
         <div class="pt-4 border-t border-purple-950/60">
             <a href="{% url 'logout' %}" class="flex items-center gap-4 px-5 py-3.5 text-rose-400/70 hover:text-rose-400 font-black text-[11px] tracking-wider uppercase hover:bg-rose-500/5 rounded-xl transition-all">
                 🚪 Exit System
             </a>
         </div>
     </aside>
- 
+
     <main class="flex-grow flex flex-col gap-6 relative z-10">
- 
+        
         <header class="bento-3d-panel px-8 py-5 rounded-2xl flex justify-between items-center">
             <div>
                 <div class="text-[9px] font-black tracking-widest text-[#e0a899] uppercase">SILENTSPEAK CONSOLE SYSTEM</div>
@@ -140,9 +137,9 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> SYSTEM ONLINE
             </div>
         </header>
- 
+
         <div class="flex-grow overflow-y-auto space-y-6 pr-1">
- 
+            
             <div id="dashboard-view" class="app-view space-y-6 w-full animate-fadeIn">
                 <div class="p-8 rounded-3xl text-white relative overflow-hidden shadow-2xl border border-white/10" style="background: linear-gradient(135deg, #160f21 0%, #09050d 100%);">
                     <div class="absolute right-0 top-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-tr from-purple-600/15 to-rose-500/15 rounded-full blur-3xl pointer-events-none"></div>
@@ -152,13 +149,13 @@
                         <p class="text-slate-400 font-medium text-xs leading-relaxed">Trigger localized preset phrases instantly with low latency, configured directly to high-fidelity audio output channels.</p>
                     </div>
                 </div>
- 
+
                 <div class="space-y-4">
                     <h3 class="text-[10px] font-black uppercase tracking-widest text-[#e0a899] pl-1 flex items-center gap-2">
                         <span>⚡ Quick Assistive Presets</span>
                         <span class="bg-white/5 text-slate-400 px-2 py-0.5 rounded text-[9px]">10 Active Modules</span>
                     </h3>
- 
+                    
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                         <button onclick="speakDirectly('I need immediate help.', 'en-IN')" class="tactile-luxury-btn p-5 rounded-2xl text-center group flex flex-col items-center justify-center gap-2">
                             <span class="text-2xl group-hover:scale-110 transition-transform duration-300">🆘</span>
@@ -169,7 +166,7 @@
                             <span class="font-black text-white text-[10px] uppercase tracking-wider">Water</span>
                         </button>
                         <button onclick="speakDirectly('I am hungry, I want to eat food.', 'en-IN')" class="tactile-luxury-btn p-5 rounded-2xl text-center group flex flex-col items-center justify-center gap-2">
-                            <span class="text-2xl group-hover:scale-110 transition-transform duration-300">🍽</span>
+                            <span class="text-2xl group-hover:scale-110 transition-transform duration-300">🍽️</span>
                             <span class="font-black text-white text-[10px] uppercase tracking-wider">Food</span>
                         </button>
                         <button onclick="speakDirectly('It is time for my medication.', 'en-IN')" class="tactile-luxury-btn p-5 rounded-2xl text-center group flex flex-col items-center justify-center gap-2">
@@ -203,16 +200,17 @@
                     </div>
                 </div>
             </div>
- 
+
             <div id="stt-view" class="app-view hidden space-y-6 w-full animate-fadeIn">
                 <div class="bento-3d-panel p-8 rounded-3xl flex flex-col items-center gap-6">
                     <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">Acoustic Audio Input Stream</h3>
- 
-                    <button id="mic-trigger" onclick="handleSTTEngine()" class="w-28 h-28 rounded-full bg-gradient-to-br from-[#1b1822] to-[#0a090d] border border-white/5 shadow-2xl flex items-center justify-center text-3xl transform active:scale-95 transition-all relative group">
+                    
+                    <button id="mic-trigger" onclick="handleSTTEngine()" 
+                            class="w-28 h-28 rounded-full bg-gradient-to-br from-[#1b1822] to-[#0a090d] border border-white/5 shadow-2xl flex items-center justify-center text-3xl transform active:scale-95 transition-all relative group">
                         <div class="absolute inset-0 rounded-full bg-purple-500/10 blur opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <span id="mic-icon" class="relative z-10">🎤</span>
                     </button>
- 
+
                     <div class="w-full max-w-sm space-y-2">
                         <select id="stt-lang" class="w-full bg-[#131018] border border-white/5 rounded-xl p-3.5 font-bold text-xs text-slate-300 focus:outline-none focus:border-purple-500 transition shadow-inner">
                             <option value="en-IN">English Accent (India)</option>
@@ -220,7 +218,7 @@
                             <option value="ta-IN">Tamil Mode (தமிழ்)</option>
                             <option value="te-IN">Telugu Mode (తెలుగు)</option>
                             <option value="kn-IN">Kannada Mode (ಕನ್ನಡ)</option>
-                            <option value="mr-IN">Marathi Mode (मराठी)</option>
+                            <option value="mr-IN">Marathi Mode (மராठी)</option>
                             <option value="bn-IN">Bengali Mode (বাংলা)</option>
                             <option value="ml-IN">Malayalam Mode (മലയാളം)</option>
                             <option value="gu-IN">Gujarati Mode (ગુજરાતી)</option>
@@ -231,11 +229,10 @@
                             <option value="en-US">English Mode (US)</option>
                             <option value="fr-FR">French Mode (Français)</option>
                         </select>
- 
                         <div id="mic-status" class="text-[9px] text-center font-bold tracking-widest text-slate-500 uppercase italic">Microphone status: Idle</div>
                     </div>
                 </div>
- 
+
                 <div class="bg-[#0b080f] border border-white/5 p-6 rounded-3xl shadow-inner space-y-4">
                     <div class="flex justify-between items-center border-b border-white/5 pb-2">
                         <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Real-time Transcript Wall</span>
@@ -244,26 +241,25 @@
                     <div id="transcript-wall" class="text-slate-300 font-bold text-base min-h-[80px] leading-relaxed">Say something...</div>
                 </div>
             </div>
- 
+
             <div id="tts-view" class="app-view hidden space-y-6 w-full animate-fadeIn">
                 <div class="bento-3d-panel p-8 rounded-3xl space-y-6">
                     <div class="flex justify-between items-center">
                         <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">Vocal Synthesis Engine</h3>
                         <button onclick="document.getElementById('tts-buffer').value=''" class="text-[10px] font-black text-rose-400 hover:text-white uppercase tracking-widest transition">Clear All</button>
                     </div>
- 
+                    
                     <textarea id="tts-buffer" rows="4" class="w-full bg-[#110e17] border border-white/5 rounded-2xl p-6 font-bold text-slate-200 text-sm focus:outline-none focus:border-purple-500/50 transition-all shadow-inner resize-none placeholder-slate-600" placeholder="Type text buffer segment here..."></textarea>
- 
+                    
                     <div class="flex gap-2">
                         <button onclick="addTone('URGENT')" class="px-4 py-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-xl text-[9px] font-black uppercase hover:bg-rose-500/20 transition">Urgent</button>
                         <button onclick="addTone('QUESTION')" class="px-4 py-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-xl text-[9px] font-black uppercase hover:bg-blue-500/20 transition">Question</button>
                         <button onclick="addTone('THANKS')" class="px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-xl text-[9px] font-black uppercase hover:bg-emerald-500/20 transition">Thanks</button>
                     </div>
- 
+                    
                     <button onclick="fetchLocation()" class="w-full py-3 bg-white/5 border border-white/5 rounded-xl text-[10px] font-black uppercase text-slate-400 hover:text-white hover:bg-white/10 transition flex items-center justify-center gap-2">
                         📍 Share My Current Location
                     </button>
- 
                     <div class="flex flex-col sm:flex-row gap-4">
                         <select id="tts-lang" class="flex-grow bg-[#131018] border border-white/5 rounded-xl p-4 font-bold text-xs text-slate-300 focus:outline-none shadow-inner">
                             <option value="en-IN">English Accent (India)</option>
@@ -271,7 +267,7 @@
                             <option value="ta-IN">Tamil Mode (தமிழ்)</option>
                             <option value="te-IN">Telugu Mode (తెలుగు)</option>
                             <option value="kn-IN">Kannada Mode (ಕನ್ನಡ)</option>
-                            <option value="mr-IN">Marathi Mode (मराठी)</option>
+                            <option value="mr-IN">Marathi Mode (மராठी)</option>
                             <option value="bn-IN">Bengali Mode (বাংলা)</option>
                             <option value="ml-IN">Malayalam Mode (മലയാളം)</option>
                             <option value="gu-IN">Gujarati Mode (ગુજરાતી)</option>
@@ -282,13 +278,12 @@
                             <option value="en-US">English Mode (US)</option>
                             <option value="fr-FR">French Mode (Français)</option>
                         </select>
- 
                         <button onclick="handleTTSEngine()" class="px-8 py-4 text-white font-black text-[11px] tracking-wider uppercase rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 shrink-0" style="background: linear-gradient(135deg, #e0a899 0%, #9333ea 100%);">
                             📢 Execute Voice
                         </button>
                     </div>
                 </div>
- 
+
                 <div class="bento-3d-panel p-6 rounded-3xl">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Recent History</h3>
@@ -299,19 +294,19 @@
                     </div>
                 </div>
             </div>
- 
+
         </div>
     </main>
- 
+
     <div id="profile-inspector-modal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 bg-black/60 backdrop-blur-sm">
         <div class="w-full max-w-sm glass-modal p-6 rounded-[28px] shadow-[0_30px_70px_rgba(0,0,0,0.8)] border border-purple-500/20 transform scale-90 transition-all duration-300 relative overflow-hidden" id="modal-card">
             <div class="absolute -right-8 -top-8 w-24 h-24 bg-gradient-to-br from-[#e0a899] to-[#9333ea] opacity-20 rounded-full blur-xl"></div>
- 
+            
             <div class="flex justify-between items-center mb-6">
                 <span class="text-[10px] font-black tracking-widest text-[#e0a899] uppercase">Security Clearance ID</span>
                 <button onclick="closeProfileInspector()" class="text-slate-400 hover:text-white transition text-xs font-black bg-white/5 w-6 h-6 rounded-full flex items-center justify-center">×</button>
             </div>
- 
+
             <div class="flex items-center gap-4 border-b border-white/5 pb-5 mb-5">
                 <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-[#e0a899] to-[#9333ea] p-0.5 shadow-lg flex items-center justify-center">
                     <div class="w-full h-full bg-[#110f17] rounded-full flex items-center justify-center text-lg">👤</div>
@@ -323,7 +318,7 @@
                     </p>
                 </div>
             </div>
- 
+
             <div class="space-y-3 text-xs">
                 <div class="flex justify-between items-center bg-white/5 px-4 py-2.5 rounded-xl border border-white/[0.02]">
                     <span class="text-slate-400 font-medium">📞 Contact Num:</span>
@@ -346,17 +341,24 @@
                     <input id="edit-address" type="text" class="modal-input hidden" value="New Delhi, India">
                 </div>
             </div>
- 
+
             <div class="space-y-2 mt-6">
                 <div class="flex gap-2">
-                    <button id="btn-edit-toggle" onclick="toggleEditMode(true)" class="w-full py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-[10px] tracking-wider uppercase rounded-xl transition-all">✏ Edit Details</button>
-                    <button id="btn-save-toggle" onclick="saveProfileChanges()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] tracking-wider uppercase rounded-xl transition-all hidden">💾 Save Changes</button>
+                    <button id="btn-edit-toggle" onclick="toggleEditMode(true)" class="w-full py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold text-[10px] tracking-wider uppercase rounded-xl transition-all">
+                        ✏️ Edit Details
+                    </button>
+                    <button id="btn-save-toggle" onclick="saveProfileChanges()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] tracking-wider uppercase rounded-xl transition-all hidden">
+                        💾 Save Changes
+                    </button>
                 </div>
-                <button onclick="closeProfileInspector()" class="w-full py-2.5 bg-gradient-to-r from-rose-500/20 to-red-500/20 hover:from-rose-500/30 hover:to-red-500/30 border border-rose-500/30 text-rose-300 font-bold text-[10px] tracking-wider uppercase rounded-xl transition-all">❌ Close Profile</button>
+                
+                <button onclick="closeProfileInspector()" class="w-full py-2.5 bg-gradient-to-r from-rose-500/20 to-red-500/20 hover:from-rose-500/30 hover:to-red-500/30 border border-rose-500/30 text-rose-300 font-bold text-[10px] tracking-wider uppercase rounded-xl transition-all">
+                    ❌ Close Profile
+                </button>
             </div>
         </div>
     </div>
- 
+    
     <div id="feedback-modal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 bg-black/60 backdrop-blur-sm">
         <div class="w-full max-w-sm glass-modal p-6 rounded-[28px] border border-purple-500/20 transform scale-90 transition-all duration-300">
             <h3 class="text-white font-black text-sm mb-4">Send Us Feedback</h3>
@@ -367,231 +369,228 @@
             </div>
         </div>
     </div>
- 
+
 </div>
- 
+
 <script>
-// Toggle Profile Editing Field State Flows
-function toggleEditMode(isEditing) {
-    const textElements = ['phone', 'dob', 'emergency', 'address'];
-    textElements.forEach(field => {
-        document.getElementById(`view-${field}`).classList.toggle('hidden', isEditing);
-        document.getElementById(`edit-${field}`).classList.toggle('hidden', !isEditing);
-    });
-    document.getElementById('btn-edit-toggle').classList.toggle('hidden', isEditing);
-    document.getElementById('btn-save-toggle').classList.toggle('hidden', !isEditing);
-}
- 
-function saveProfileChanges() {
-    const textElements = ['phone', 'dob', 'emergency', 'address'];
-    textElements.forEach(field => {
-        const inputVal = document.getElementById(`edit-${field}`).value;
-        document.getElementById(`view-${field}`).innerText = inputVal;
-    });
-    // Revert form state back to non-editing view mode
-    toggleEditMode(false);
-}
- 
-// 3D Profile Inspector Call Actions
-function openProfileInspector() {
-    let modal = document.getElementById('profile-inspector-modal');
-    let card = document.getElementById('modal-card');
-    modal.classList.remove('opacity-0', 'pointer-events-none');
-    card.classList.remove('scale-90');
-    card.classList.add('scale-100');
-}
- 
-function closeProfileInspector() {
-    let modal = document.getElementById('profile-inspector-modal');
-    let card = document.getElementById('modal-card');
-    modal.classList.add('opacity-0', 'pointer-events-none');
-    card.classList.remove('scale-100');
-    card.classList.add('scale-90');
-    toggleEditMode(false); // resets view state if closed mid-edit
-}
- 
-function switchView(viewId) {
-    document.querySelectorAll('.app-view').forEach(view => view.classList.add('hidden'));
-    document.getElementById(viewId).classList.remove('hidden');
- 
-    document.querySelectorAll('.target-nav').forEach(btn => {
-        btn.style.background = 'transparent';
-        btn.style.boxShadow = 'none';
-        btn.classList.remove('text-white');
-        btn.classList.add('text-slate-400');
-    });
- 
-    let activeBtn = document.getElementById('nav-' + viewId);
-    activeBtn.style.background = 'linear-gradient(135deg, #e0a899 0%, #9333ea 100%)';
-    activeBtn.classList.remove('text-slate-400');
-    activeBtn.classList.add('text-white');
- 
-    let title = document.getElementById('view-title');
-    if (viewId === 'dashboard-view') {
-        title.innerText = "Workspace Dashboard";
-    } else if (viewId === 'stt-view') {
-        title.innerText = "Speech to Text 🎙";
-    } else if (viewId === 'tts-view') {
-        title.innerText = "Text to Speech 🔊";
+    // Toggle Profile Editing Field State Flows
+    function toggleEditMode(isEditing) {
+        const textElements = ['phone', 'dob', 'emergency', 'address'];
+        
+        textElements.forEach(field => {
+            document.getElementById(`view-${field}`).classList.toggle('hidden', isEditing);
+            document.getElementById(`edit-${field}`).classList.toggle('hidden', !isEditing);
+        });
+
+        document.getElementById('btn-edit-toggle').classList.toggle('hidden', isEditing);
+        document.getElementById('btn-save-toggle').classList.toggle('hidden', !isEditing);
     }
-}
- 
-function handleTTSEngine() {
-    const inputVal = document.getElementById('tts-buffer').value.trim();
-    const selectedLang = document.getElementById('tts-lang').value;
- 
-    if (!inputVal) return alert("Please populate text context stream first.");
- 
-    // Grab direct CSRF value securely
-    const currentCsrf = document.getElementById('django-csrf-token').value;
- 
-    fetch('/text-to-speech/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': currentCsrf },
-        body: JSON.stringify({ text: inputVal, lang: selectedLang })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            // Play the base64-encoded audio returned directly in the JSON response
-            const audio = new Audio('data:audio/mpeg;base64,' + data.audio);
-            audio.play();
-            updateHistory(inputVal);
-        } else {
-            alert("Error: " + (data.message || "Unknown backend issue"));
+
+    function saveProfileChanges() {
+        const textElements = ['phone', 'dob', 'emergency', 'address'];
+        
+        textElements.forEach(field => {
+            const inputVal = document.getElementById(`edit-${field}`).value;
+            document.getElementById(`view-${field}`).innerText = inputVal;
+        });
+
+        // Revert form state back to non-editing view mode
+        toggleEditMode(false);
+    }
+
+    // 3D Profile Inspector Call Actions
+    function openProfileInspector() {
+        let modal = document.getElementById('profile-inspector-modal');
+        let card = document.getElementById('modal-card');
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        card.classList.remove('scale-90');
+        card.classList.add('scale-100');
+    }
+
+    function closeProfileInspector() {
+        let modal = document.getElementById('profile-inspector-modal');
+        let card = document.getElementById('modal-card');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        card.classList.remove('scale-100');
+        card.classList.add('scale-90');
+        toggleEditMode(false); // resets view state if closed mid-edit
+    }
+
+    function switchView(viewId) {
+        document.querySelectorAll('.app-view').forEach(view => view.classList.add('hidden'));
+        document.getElementById(viewId).classList.remove('hidden');
+
+        document.querySelectorAll('.target-nav').forEach(btn => {
+            btn.style.background = 'transparent';
+            btn.style.boxShadow = 'none';
+            btn.classList.remove('text-white');
+            btn.classList.add('text-slate-400');
+        });
+
+        let activeBtn = document.getElementById('nav-' + viewId);
+        activeBtn.style.background = 'linear-gradient(135deg, #e0a899 0%, #9333ea 100%)';
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('text-white');
+
+        let title = document.getElementById('view-title');
+        if (viewId === 'dashboard-view') {
+            title.innerText = "Workspace Dashboard";
+        } else if (viewId === 'stt-view') {
+            title.innerText = "Speech to Text 🎙️";
+        } else if (viewId === 'tts-view') {
+            title.innerText = "Text to Speech 🔊";
         }
-    })
-    .catch(err => {
-        console.error("Network error:", err);
-        alert("Could not connect to the server.");
-    });
-}
- 
-function updateHistory(text) {
-    const historyContainer = document.getElementById('tts-history');
-    if (historyContainer.querySelector('p')?.innerText === "No history yet...") {
-        historyContainer.innerHTML = '';
     }
- 
-    const now = new Date();
-    const dateString = now.toLocaleDateString([], { month: 'short', day: 'numeric' });
-    const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
- 
-    const entry = document.createElement('div');
-    entry.className = "p-3 bg-white/5 rounded-xl border border-white/5 text-[11px] text-slate-300 font-medium hover:bg-white/10 transition cursor-pointer";
-    entry.innerHTML = `
-        <div class="truncate font-bold text-white">${text}</div>
-        <div class="text-[9px] text-slate-500 mt-1">${dateString} • ${timeString}</div>
-    `;
-    entry.onclick = () => { document.getElementById('tts-buffer').value = text; };
- 
-    historyContainer.prepend(entry);
-}
- 
-function speakDirectly(text, targetLang) {
-    document.getElementById('tts-buffer').value = text;
-    document.getElementById('tts-lang').value = targetLang;
-    handleTTSEngine();
-}
- 
-function addTone(toneType) {
-    const buffer = document.getElementById('tts-buffer');
-    const toneMap = {
-        'URGENT': ' [URGENT] ',
-        'QUESTION': ' [QUESTION] ',
-        'THANKS': ' [THANKS] '
-    };
-    buffer.value += toneMap[toneType] || '';
-    buffer.focus();
-}
- 
-function fetchLocation() {
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(position => {
-            const lat = position.coords.latitude.toFixed(4);
-            const lon = position.coords.longitude.toFixed(4);
-            const locText = ` My current coordinates are Latitude: ${lat}, Longitude: ${lon}.`;
-            document.getElementById('tts-buffer').value += locText;
-        }, err => alert("Location access denied."));
-    } else {
-        alert("Geolocation not supported by this browser.");
+
+    function handleTTSEngine() {
+        const inputVal = document.getElementById('tts-buffer').value.trim();
+        const selectedLang = document.getElementById('tts-lang').value;
+        if (!inputVal) return alert("Please populate text context stream first.");
+
+        // Grab direct CSRF value securely
+        const currentCsrf = document.getElementById('django-csrf-token').value;
+
+        fetch('/text-to-speech/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': currentCsrf },
+            body: JSON.stringify({ text: inputVal, lang: selectedLang })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                new Audio('/static/LingoVoice/output.mp3?cb=' + new Date().getTime()).play();
+                updateHistory(inputVal);
+            }
+        });
     }
-}
- 
-// FIXED FEEDBACK LOGIC (Now pushes data securely to backend database endpoint)
-function openFeedbackModal() { document.getElementById('feedback-modal').classList.remove('opacity-0', 'pointer-events-none'); }
-function closeFeedbackModal() { document.getElementById('feedback-modal').classList.add('opacity-0', 'pointer-events-none'); }
- 
-function submitFeedback() {
-    const feedbackText = document.getElementById('feedback-text').value.trim();
-    if (!feedbackText) {
-        alert("Please enter some feedback before submitting.");
-        return;
-    }
- 
-    // Pulls secure token from our top hidden node injection
-    const verifiedToken = document.getElementById('django-csrf-token').value;
- 
-    fetch('/feedback/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': verifiedToken
-        },
-        body: JSON.stringify({ message: feedbackText })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            alert("Feedback saved perfectly into SQLite database!");
-            document.getElementById('feedback-text').value = '';
-            closeFeedbackModal();
-        } else {
-            alert("Error saving feedback: " + (data.error || "Unknown backend issue"));
+
+    function updateHistory(text) {
+        const historyContainer = document.getElementById('tts-history');
+        if (historyContainer.querySelector('p')?.innerText === "No history yet...") {
+            historyContainer.innerHTML = '';
         }
-    })
-    .catch(err => {
-        console.error("Network error:", err);
-        alert("Could not connect to the server.");
-    });
-}
- 
-let track;
-function handleSTTEngine() {
-    let Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let icon = document.getElementById('mic-icon');
-    let status = document.getElementById('mic-status');
-    let wall = document.getElementById('transcript-wall');
- 
-    if (track && status.innerText.includes("Listening")) {
-        track.stop();
-        return;
+
+        const now = new Date();
+        const dateString = now.toLocaleDateString([], { month: 'short', day: 'numeric' });
+        const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        const entry = document.createElement('div');
+        entry.className = "p-3 bg-white/5 rounded-xl border border-white/5 text-[11px] text-slate-300 font-medium hover:bg-white/10 transition cursor-pointer";
+        
+        entry.innerHTML = `
+            <div class="truncate font-bold text-white">${text}</div>
+            <div class="text-[9px] text-slate-500 mt-1">${dateString} • ${timeString}</div>
+        `;
+        
+        entry.onclick = () => { document.getElementById('tts-buffer').value = text; };
+        
+        historyContainer.prepend(entry);
     }
- 
-    track = new Speech();
-    track.lang = document.getElementById('stt-lang').value;
- 
-    track.onstart = function() {
-        icon.innerText = "🛑";
-        status.innerText = "Listening...";
-        status.classList.add('text-rose-500');
-    };
- 
-    track.onresult = function(ev) {
-        let res = ev.results[0][0].transcript;
-        wall.innerText = "💬 " + res;
-    };
- 
-    track.onend = function() {
-        icon.innerText = "🎤";
-        status.innerText = "Microphone status: Idle";
-        status.classList.remove('text-rose-500');
-    };
- 
-    track.start();
-}
+
+    function speakDirectly(text, targetLang) {
+        document.getElementById('tts-buffer').value = text;
+        document.getElementById('tts-lang').value = targetLang;
+        handleTTSEngine();
+    }
+
+    function addTone(toneType) {
+        const buffer = document.getElementById('tts-buffer');
+        const toneMap = {
+            'URGENT': ' [URGENT] ',
+            'QUESTION': ' [QUESTION] ',
+            'THANKS': ' [THANKS] '
+        };
+        buffer.value += toneMap[toneType] || '';
+        buffer.focus();
+    }
+
+    function fetchLocation() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude.toFixed(4);
+                const lon = position.coords.longitude.toFixed(4);
+                const locText = ` My current coordinates are Latitude: ${lat}, Longitude: ${lon}.`;
+                document.getElementById('tts-buffer').value += locText;
+            }, err => alert("Location access denied."));
+        } else {
+            alert("Geolocation not supported by this browser.");
+        }
+    }
+
+    // FIXED FEEDBACK LOGIC (Now pushes data securely to backend database endpoint)
+    function openFeedbackModal() { document.getElementById('feedback-modal').classList.remove('opacity-0', 'pointer-events-none'); }
+    function closeFeedbackModal() { document.getElementById('feedback-modal').classList.add('opacity-0', 'pointer-events-none'); }
+    
+    function submitFeedback() { 
+        const feedbackText = document.getElementById('feedback-text').value.trim();
+        if (!feedbackText) {
+            alert("Please enter some feedback before submitting.");
+            return;
+        }
+
+        // Pulls secure token from our top hidden node injection
+        const verifiedToken = document.getElementById('django-csrf-token').value;
+
+        fetch('/feedback/', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json', 
+                'X-CSRFToken': verifiedToken 
+            },
+            body: JSON.stringify({ message: feedbackText })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert("Feedback saved perfectly into SQLite database!");
+                document.getElementById('feedback-text').value = '';
+                closeFeedbackModal();
+            } else {
+                alert("Error saving feedback: " + (data.error || "Unknown backend issue"));
+            }
+        })
+        .catch(err => {
+            console.error("Network error:", err);
+            alert("Could not connect to the server.");
+        });
+    }
+
+    let track;
+    function handleSTTEngine() {
+        let Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let icon = document.getElementById('mic-icon');
+        let status = document.getElementById('mic-status');
+        let wall = document.getElementById('transcript-wall');
+
+        if(track && status.innerText.includes("Listening")) {
+            track.stop();
+            return;
+        }
+
+        track = new Speech();
+        track.lang = document.getElementById('stt-lang').value;
+
+        track.onstart = function() {
+            icon.innerText = "🛑";
+            status.innerText = "Listening...";
+            status.classList.add('text-rose-500');
+        };
+
+        track.onresult = function(ev) {
+            let res = ev.results[0][0].transcript;
+            wall.innerText = "💬 " + res;
+        };
+
+        track.onend = function() {
+            icon.innerText = "🎤";
+            status.innerText = "Microphone status: Idle";
+            status.classList.remove('text-rose-500');
+        };
+
+        track.start();
+    }
 </script>
- 
+
 <style>
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(4px); }
@@ -600,6 +599,3 @@ function handleSTTEngine() {
     .animate-fadeIn { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 </style>
 {% endblock %}
- 
-
-
