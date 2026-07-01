@@ -436,35 +436,44 @@ function switchView(viewId) {
     }
 }
 
+// Some browsers load voices asynchronously; this ensures they're ready before first use
+if ('speechSynthesis' in window) {
+    window.speechSynthesis.getVoices(); // triggers loading in some browsers
+}
+
 function handleTTSEngine() {
     const inputVal = document.getElementById('tts-buffer').value.trim();
     const selectedLang = document.getElementById('tts-lang').value;
 
     if (!inputVal) return alert("Please populate text context stream first.");
 
-    // Grab direct CSRF value securely
-    const currentCsrf = document.getElementById('django-csrf-token').value;
+    if (!('speechSynthesis' in window)) {
+        alert("Speech synthesis isn't supported in this browser.");
+        return;
+    }
 
-    fetch('/text-to-speech/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': currentCsrf },
-        body: JSON.stringify({ text: inputVal, lang: selectedLang })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === 'success') {
-            // Play the base64-encoded audio returned directly in the JSON response
-            const audio = new Audio('data:audio/mpeg;base64,' + data.audio);
-            audio.play();
-            updateHistory(inputVal);
-        } else {
-            alert("Error: " + (data.message || "Unknown backend issue"));
-        }
-    })
-    .catch(err => {
-        console.error("Network error:", err);
-        alert("Could not connect to the server.");
-    });
+    // Cancel anything currently speaking so requests don't queue up oddly
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(inputVal);
+    utterance.lang = selectedLang;
+
+    // Try to pick a voice that matches the selected language exactly (or closely)
+    const voices = window.speechSynthesis.getVoices();
+    const matchedVoice = voices.find(v => v.lang === selectedLang)
+        || voices.find(v => v.lang.startsWith(selectedLang.split('-')[0]));
+    if (matchedVoice) utterance.voice = matchedVoice;
+
+    utterance.onerror = (e) => {
+        console.error("Speech synthesis error:", e);
+        alert("Could not speak the text. Try a different language mode.");
+    };
+
+    utterance.onend = () => {
+        updateHistory(inputVal);
+    };
+
+    window.speechSynthesis.speak(utterance);
 }
 
 function updateHistory(text) {
