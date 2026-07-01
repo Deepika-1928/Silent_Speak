@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Feedback
 import json
 import os
+import io
+import base64
 
 # Try importing dependencies dynamically
 try:
@@ -69,11 +71,13 @@ def text_to_speech(request):
     """
     Core Voice Engine:
     Receives text and a language code from the frontend,
-    translations it to the target language, and generates native speech audio.
+    translates it to the target language, and returns the binary audio
+    as a base64-encoded string inside a JSON response (no file writes to disk,
+    which keeps this compatible with PythonAnywhere's filesystem).
     """
     if request.method != 'POST':
         return JsonResponse({'status': 'error', 'message': 'Invalid request protocol style.'}, status=400)
-    
+
     if gTTS is None:
         return JsonResponse({
             'status': 'error',
@@ -93,7 +97,6 @@ def text_to_speech(request):
         clean_lang = incoming_lang.split('-')[0]
 
         # AUTOMATIC TRANSLATION LAYER
-        # If the text is English and the user picked a different language, translate it first!
         final_text = text_content
         if clean_lang != 'en' and GoogleTranslator is not None:
             try:
@@ -101,19 +104,18 @@ def text_to_speech(request):
             except Exception as e:
                 print(f"Translation skip/fallback: {e}")
 
-        # Construct the directory path safely inside your static asset tree
-        output_directory = os.path.join(settings.BASE_DIR, 'LingoVoice', 'static', 'LingoVoice')
-        os.makedirs(output_directory, exist_ok=True)
-        output_file_path = os.path.join(output_directory, 'output.mp3')
-
-        # Run compilation synthesis with the translated text
+        # RUN AUDIO COMPILATION SYNTHESIS (IN-MEMORY STREAM FIX)
         tts_engine = gTTS(text=final_text, lang=clean_lang, slow=False)
-        tts_engine.save(output_file_path)
 
-        return JsonResponse({
-            'status': 'success',
-            'audio_url': '/static/LingoVoice/output.mp3'
-        })
+        # Create a virtual container in RAM to hold the mp3 data bytes
+        audio_buffer = io.BytesIO()
+        tts_engine.write_to_fp(audio_buffer)
+        audio_buffer.seek(0)
+
+        # Encode audio as base64 so the browser can play it directly, no disk write needed
+        audio_base64 = base64.b64encode(audio_buffer.read()).decode('utf-8')
+
+        return JsonResponse({'status': 'success', 'audio': audio_base64})
 
     except Exception as error_log:
         return JsonResponse({'status': 'error', 'message': str(error_log)}, status=500)
@@ -130,5 +132,5 @@ def feedback_view(request):
             return redirect('feedback')
         else:
             messages.error(request, "Message cannot be empty.")
-            
+
     return render(request, 'LingoVoice/feedback.html')
