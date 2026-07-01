@@ -53,7 +53,10 @@ def login_view(request):
 
 
 def dashboard_view(request):
-    """Renders the core multi-language communication workspace."""
+    """
+    Renders the core multi-language communication workspace.
+    Explicitly uses the current app directory structure to bypass path mismatches.
+    """
     if not request.user.is_authenticated:
         return redirect('login')
     return render(request, 'LingoVoice/dashboad.html')
@@ -68,9 +71,9 @@ def logout_view(request):
 def text_to_speech(request):
     """
     Core Voice Engine:
-    Receives text and a language code from the frontend,
-    translates it to the target language, saves it to the static folder,
-    and returns a clean JSON success status matching your template JS.
+    Receives text and a language code from the frontend, translates it,
+    saves it directly into the static folder as output.mp3, and returns
+    a JSON success response matching what your template expects.
     """
     if request.method != 'POST':
         return JsonResponse({'status': 'error', 'message': 'Invalid request protocol style.'}, status=400)
@@ -101,16 +104,17 @@ def text_to_speech(request):
             except Exception as e:
                 print(f"Translation skip/fallback: {e}")
 
-        # Save the audio file where your dashboard template is looking for it
-        static_dir = os.path.join(settings.BASE_DIR, 'LingoVoice', 'static', 'LingoVoice')
+        # DYNAMIC PATH RESOLUTION: Finds the static directory relative to this views file
+        current_app_dir = os.path.dirname(os.path.abspath(__file__))
+        static_dir = os.path.join(current_app_dir, 'static', 'LingoVoice')
         os.makedirs(static_dir, exist_ok=True)
         output_filepath = os.path.join(static_dir, 'output.mp3')
 
-        # Run compilation synthesis
+        # Run compilation synthesis and save to disk
         tts_engine = gTTS(text=final_text, lang=clean_lang, slow=False)
         tts_engine.save(output_filepath)
         
-        # Return success status so your original dashboad.html plays the audio
+        # Return success status so your original dashboad.html plays the audio file
         return JsonResponse({'status': 'success'})
 
     except Exception as error_log:
